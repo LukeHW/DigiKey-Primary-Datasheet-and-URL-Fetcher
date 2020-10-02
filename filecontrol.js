@@ -1,11 +1,11 @@
 // node modules
 const fs = require("fs");
 const path = require("path");
-const http = require("http");
 const createShortcutUrl = require("create-url-shortcut");
 
-// testing URL
+// testing URL (need to replace with URL from digi-key API)
 var testURL = "https://www.digikey.com/en/products/detail/comchip-technology/ACGRKM4007-HF/5013708?s=N4IgTCBcDaIGwBYCMBaJcDMCVhQOQBEQBdAXyA";
+
 // creating shortcut url object (value: "", ext: "")
 var componentURL = createShortcutUrl(testURL);
 
