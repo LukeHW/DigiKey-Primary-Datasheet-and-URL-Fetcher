@@ -1,7 +1,7 @@
 // node modules
 const fs = require("fs");
 const path = require("path");
-const http = require("http");
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const createShortcutUrl = require("create-url-shortcut");
 
 // testing URL
@@ -21,3 +21,17 @@ fs.writeFile(path.join(rootFilePath, curFileName), componentURL.value, (err) => 
     } 
     console.log("The file was saved!");
 });
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+            console.log(XMLHttpRequest.responseText);
+    };
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+};
+
+httpGetAsync("https://sandbox-api.digikey.com/Search/v3/Products/{641-1634-2-ND}");
