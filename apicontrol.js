@@ -100,7 +100,7 @@ const client_secret = "bOIpbcG6joybFtSe";
 // X-DIGIKEY-Locale-ShipToCountry: us
 // X-DIGIKEY-Customer-Id: 0
 
-
+// Steps 1 and 2 need to be enabled each time this is done after 30 min
 // main method the gets ProductURL and PrimaryDatasheet with given product_ID
 fetch("https://api.digikey.com/Search/v3/Products/641-1634-2-ND?includes=ProductUrl%2CPrimaryDatasheet", {
     method: "GET",
