@@ -1,18 +1,12 @@
 // node modules
 const fs = require("fs");
 const path = require("path");
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-const createShortcutUrl = require("create-url-shortcut");
-const axios = require("axios");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const fetch = require("node-fetch");
 
 
 const client_id = "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i";
 const client_secret = "bOIpbcG6joybFtSe";
-
-// testing URL
-var testURL = "https://www.digikey.com/en/products/detail/comchip-technology/ACGRKM4007-HF/5013708?s=N4IgTCBcDaIGwBYCMBaJcDMCVhQOQBEQBdAXyA";
-// creating shortcut url object (value: "", ext: "")
-var componentURL = createShortcutUrl(testURL);
 
 // function httpGetAsync(theUrl, callback)
 // {
@@ -48,31 +42,24 @@ var componentURL = createShortcutUrl(testURL);
 
 // KNOWN BUGS: format of options and authData are incorrect. Not sure if they need to match Digi-Key's API or can be any
 
-const options = {
-    headers: {
-        Host: "api.digikey.com",
-        Content: "application/json"
-    }
+const authData = {
+    "code": "2DAT7yIy",
+    "client_id": "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
+    "client_secret": "bOIpbcG6joybFtSe",
+    "redirect_uri": "https://localhost",
+    "grant_type": "authorization_code"
 };
 
-const authData = JSON.stringify({
-    code: "8lfhkgFi",
-    client_id: "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
-    client_secret: "bOIpbcG6joybFtSe",
-    redirect_uri: "https://localhost",
-    grant_type: "authorization_code"
-});
-
-axios
-    .post("/v1/oauth2/token", authData, options)
-    .then(res => {
-        console.log(`statusCode: ${res.statusCode}`);
-        console.log(res);
-    })
-    .catch(error => {
-        console.log(error);
-    })
-
+fetch("https://api.digikey.com/v1/oauth2/token", {
+    method: "POST",
+    headers: {
+        "Host": "api.digikey.com",
+        "Content-Type": "application/json"
+    },
+    body: authData
+}).then((res) => res.json())
+.then((data) => console.log(data))
+.catch((err) => console.log(err))
 
 //THIRD STEP (optional): getting refresh token (90 days before expires)
 // POST /v1/oauth2/token HTTP/1.1
