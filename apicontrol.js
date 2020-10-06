@@ -8,7 +8,7 @@ const qs = require("qs");
 const client_id = "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i";
 const client_secret = "bOIpbcG6joybFtSe";
 
-var jsonResponse = new Array;
+var jsonResponse = [];
 var apiCode = "";
 
 
@@ -27,7 +27,7 @@ var apiCode = "";
 
 // SECOND STEP: example authorization code POST request (30 min before expires)
 // const authData = {
-//     code: "N85lI9pB",
+//     code: "GD0VuDI7",
 //     client_id: "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
 //     client_secret: "bOIpbcG6joybFtSe",
 //     redirect_uri: "https://localhost",
@@ -66,22 +66,22 @@ var apiCode = "";
 // .then((json) => console.log(json))
 // .catch((err) => console.log(err))
 
-// ACCESS TOKEN: 230nCf1G7Gy4vm8ZPPIjbcynRyJU
-// REFRESH TOKEN: B1swDypTfJG5ziheOf74WyIh4J059y0J
+// ACCESS TOKEN: RlzjVx1IeLzWcqxr6X6UgzZF9uN3
+// REFRESH TOKEN: hIlUFiMSsKoFbD8LdGGh29gAE0LHP01J
 
 // LAST STEP: making an API call using GET
 // Steps 1 and 2 need to be enabled each time this is done after 30 min
 // main method the gets ProductURL and PrimaryDatasheet with given product_ID
 module.exports.fetchFiles = (productID) => {
     var productID = productID;
-    var getProductInfo = fetch(`https://api.digikey.com/Search/v3/Products/${productID}?includes=ProductUrl%2CPrimaryDatasheet`, {
+    return fetch(`https://api.digikey.com/Search/v3/Products/${productID}?includes=ProductUrl%2CPrimaryDatasheet`, {
     method: "GET",
     headers: {
         "Host": "api.digikey.com",
         "Content-Type": "application/x-www-form-urlencoded",
         "X-DIGIKEY-Client-Id": "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
         // 30 min Auth Bearer Token
-        "Authorization": "Bearer 230nCf1G7Gy4vm8ZPPIjbcynRyJU",
+        "Authorization": "Bearer RlzjVx1IeLzWcqxr6X6UgzZF9uN3",
         "X-DIGIKEY-Locale-Site": "US",
         "X-DIGIKEY-Locale-Language": "en",
         "X-DIGIKEY-Locale-Currency": "USD",

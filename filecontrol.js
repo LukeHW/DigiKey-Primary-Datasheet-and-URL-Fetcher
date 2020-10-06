@@ -66,7 +66,7 @@ async function processLineByLine() {
       // Each line in input.txt will be successively available here as `productID`.
       console.log(`Line from file: ${productID}, index: ${index}`);
       // should return pdf url and product url
-      product.fetchFiles(productID);
+      await product.fetchFiles(productID);
       // updating index after we read a line in the file
       console.log(product.getArray());
       //writeFiles(productID, jsonResponse.ProductURL, jsonResponse.PrimaryDatasheet, index);
