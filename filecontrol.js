@@ -1,11 +1,11 @@
 // node modules
 const fs = require("fs");
 const path = require("path");
-const request = require("request");
 const product = require("./apicontrol.js");
 const createShortcutUrl = require("create-url-shortcut");
 const readline = require("readline");
 require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
+const download = require("download-pdf");
 
 // root directory file path to be saved in
 const rootFilePath = path.join(__dirname, "Component Files");
@@ -26,7 +26,6 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     var updatedPath = path.join(rootFilePath, folderName);
 
     // create new folder in rootFilePath
-    // make sure updated Path is correct!!!
     fs.mkdir(updatedPath, function(err) {
         if (err) {
             console.log(err);
@@ -49,13 +48,19 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     // request(productDatasheet).pipe(file);
     // console.log("The pdf was saved");
 
-    // updated request
-    let pdfBuffer = request.get({uri: productDatasheet, encoding: null});
+    // updated request (THIS IS FOR SERVER SIDE -- URI)
+    //let pdfBuffer = request.get({uri: productDatasheet, encoding: null});
     //console.log("Writing downloaded PDF file to " + `${updatedPath}/${datasheetFileName}` + "...");
-    fs.writeFileSync(`${updatedPath}/${datasheetFileName}`, pdfBuffer);
+    //fs.writeFileSync(`${updatedPath}/${datasheetFileName}`, pdfBuffer);
+
+    // third option I have tried. not working either -- throws error, not documented
+    var options = {
+        directory: updatedPath,
+        filename: datasheetFileName
+    };
+
+    download(productDatasheet, options);
 };
-// example writeFiles method call
-//writeFiles("541-10.0KAFTR-ND", "https://www.digikey.com/en/products/detail/vishay-dale/CRCW251210K0FKEG/1173663?s=N4IgTCBcDaIKwBYCMBaJAGAdOg0gQQDEAVAJRQDkAREAXQF8g", "https://www.vishay.com/docs/20035/dcrcwe3.pdf", 2);
 
 // reading the file and calling methods
 async function processLineByLine() {
