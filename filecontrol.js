@@ -1,8 +1,9 @@
 // node modules
 const fs = require("fs");
 const path = require("path");
-const http = require("http");
-const https = require("https");
+// const http = require("http");
+// const https = require("https");
+const request = require("request");
 const express = require("express");
 const app = express();
 const createShortcutUrl = require("create-url-shortcut");
@@ -70,10 +71,8 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
 
     // http and https response
     const file = fs.createWriteStream(`${updatedPath}/${datasheetFileName}`);
-    https.get(productDatasheet, function(response) {
-        response.pipe(file);
-        console.log("The pdf was saved");
-    });
+    request.get(productDatasheet).pipe(file);
+    console.log("The pdf was saved");
 };
 
-writeFiles("541-10.0KAFTR-ND", "http://www.digikey.com/en/products/detail/vishay-dale/CRCW251210K0FKEG/1173663?s=N4IgTCBcDaIKwBYCMBaJAGAdOg0gQQDEAVAJRQDkAREAXQF8g", "http://www.comchiptech.com/admin/files/product/ACGRKM4001-HF%20Thru.%20ACGRKM4007-HF%20RevC.pdf", 2);
+writeFiles("541-10.0KAFTR-ND", "https://www.digikey.com/en/products/detail/vishay-dale/CRCW251210K0FKEG/1173663?s=N4IgTCBcDaIKwBYCMBaJAGAdOg0gQQDEAVAJRQDkAREAXQF8g", "https://www.vishay.com/docs/20035/dcrcwe3.pdf", 2);
