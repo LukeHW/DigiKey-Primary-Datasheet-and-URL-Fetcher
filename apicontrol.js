@@ -4,6 +4,7 @@ const path = require("path");
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const fetch = require("node-fetch");
 const qs = require("qs");
+require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 
 const client_id = "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i";
 const client_secret = "bOIpbcG6joybFtSe";
@@ -27,7 +28,7 @@ var apiCode = "";
 
 // SECOND STEP: example authorization code POST request (30 min before expires)
 // const authData = {
-//     code: "GD0VuDI7",
+//     code: "Z9AEpklJ",
 //     client_id: "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
 //     client_secret: "bOIpbcG6joybFtSe",
 //     redirect_uri: "https://localhost",
@@ -66,8 +67,8 @@ var apiCode = "";
 // .then((json) => console.log(json))
 // .catch((err) => console.log(err))
 
-// ACCESS TOKEN: RlzjVx1IeLzWcqxr6X6UgzZF9uN3
-// REFRESH TOKEN: hIlUFiMSsKoFbD8LdGGh29gAE0LHP01J
+// ACCESS TOKEN: TD2GEsxav2yonlvzms06iWTLUW1r
+// REFRESH TOKEN: 01KGZ4ymfBaR8hICUf2f24Kb9RNpJbWN
 
 // LAST STEP: making an API call using GET
 // Steps 1 and 2 need to be enabled each time this is done after 30 min
@@ -81,7 +82,7 @@ module.exports.fetchFiles = (productID) => {
         "Content-Type": "application/x-www-form-urlencoded",
         "X-DIGIKEY-Client-Id": "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
         // 30 min Auth Bearer Token
-        "Authorization": "Bearer RlzjVx1IeLzWcqxr6X6UgzZF9uN3",
+        "Authorization": "Bearer TD2GEsxav2yonlvzms06iWTLUW1r",
         "X-DIGIKEY-Locale-Site": "US",
         "X-DIGIKEY-Locale-Language": "en",
         "X-DIGIKEY-Locale-Currency": "USD",

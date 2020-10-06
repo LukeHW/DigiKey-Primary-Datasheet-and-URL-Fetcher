@@ -5,6 +5,7 @@ const request = require("request");
 const product = require("./apicontrol.js");
 const createShortcutUrl = require("create-url-shortcut");
 const readline = require("readline");
+require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 
 // root directory file path to be saved in
 const rootFilePath = path.join(__dirname, "Component Files");
@@ -17,7 +18,7 @@ const rootFilePath = path.join(__dirname, "Component Files");
 var writeFiles = (productID, productURL, productDatasheet, index) => {
     var shortFileName = `${productID} Digi-Key Webpage.url`;
     var datasheetFileName = `${productID} Datasheet.pdf`;
-    var folderName = `(${index}) ${productID}`;
+    var folderName = `(${index + 1}) ${productID}`;
     var productURL = createShortcutUrl(productURL);
     var productDatasheet = productDatasheet;
 
@@ -43,6 +44,7 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     });
 
     // http/https response using request -- saves .pdf file
+    // KNOWN ISSUE: ONLY HTTPS IS WORKING TO SAVE FILE
     const file = fs.createWriteStream(`${updatedPath}/${datasheetFileName}`);
     request.get(productDatasheet).pipe(file);
     console.log("The pdf was saved");
@@ -53,25 +55,36 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
 // reading the file and calling methods
 async function processLineByLine() {
     const fileStream = fs.createReadStream('parts.txt');
-    var index = 1;
-  
+    var index = 0;
+    var urlArray = [];
+    var productIDArray = [];
+    var productURL = "";
+    var productDatasheet = "";
+
     const rl = readline.createInterface({
       input: fileStream,
       crlfDelay: Infinity
     });
     // Note: we use the crlfDelay option to recognize all instances of CR LF
     // ('\r\n') in input.txt as a single line break.
-  
+    
+    // gathering urls for all productIDs in parts.txt, placing in local urlArray
     for await (const productID of rl) {
-      // Each line in input.txt will be successively available here as `productID`.
-      console.log(`Line from file: ${productID}, index: ${index}`);
+      // adding productID to the global array
+      productIDArray.push(productID);
       // should return pdf url and product url
       await product.fetchFiles(productID);
-      // updating index after we read a line in the file
-      console.log(product.getArray());
-      //writeFiles(productID, jsonResponse.ProductURL, jsonResponse.PrimaryDatasheet, index);
-      index++;
-    }
+    };
+
+    // getting the finished urlArray from the API file
+    urlArray = product.getArray();
+
+    urlArray.forEach((obj) => {
+        productURL = obj.ProductUrl;
+        productDatasheet = obj.PrimaryDatasheet;
+        writeFiles(productIDArray[index], productURL, productDatasheet, index);
+        index++;
+    })
 };
   
 processLineByLine();
