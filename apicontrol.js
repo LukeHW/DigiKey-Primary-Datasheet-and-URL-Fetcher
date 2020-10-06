@@ -28,7 +28,7 @@ var apiCode = "";
 
 // SECOND STEP: example authorization code POST request (30 min before expires)
 // const authData = {
-//     code: "Z9AEpklJ",
+//     code: "4SxIE0lr",
 //     client_id: "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
 //     client_secret: "bOIpbcG6joybFtSe",
 //     redirect_uri: "https://localhost",
@@ -67,8 +67,8 @@ var apiCode = "";
 // .then((json) => console.log(json))
 // .catch((err) => console.log(err))
 
-// ACCESS TOKEN: TD2GEsxav2yonlvzms06iWTLUW1r
-// REFRESH TOKEN: 01KGZ4ymfBaR8hICUf2f24Kb9RNpJbWN
+// ACCESS TOKEN: upoJxjASDWsjYsAcbaH5R3vmIm6q
+// REFRESH TOKEN: 7YYmLhWjrh805TmGp4HA4QS6GIAGO5rx
 
 // LAST STEP: making an API call using GET
 // Steps 1 and 2 need to be enabled each time this is done after 30 min
@@ -82,7 +82,7 @@ module.exports.fetchFiles = (productID) => {
         "Content-Type": "application/x-www-form-urlencoded",
         "X-DIGIKEY-Client-Id": "fA8opoKWuuOAT74zaqHWs25ke6gdTZ1i",
         // 30 min Auth Bearer Token
-        "Authorization": "Bearer TD2GEsxav2yonlvzms06iWTLUW1r",
+        "Authorization": "Bearer upoJxjASDWsjYsAcbaH5R3vmIm6q",
         "X-DIGIKEY-Locale-Site": "US",
         "X-DIGIKEY-Locale-Language": "en",
         "X-DIGIKEY-Locale-Currency": "USD",

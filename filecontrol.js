@@ -44,10 +44,15 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     });
 
     // http/https response using request -- saves .pdf file
-    // KNOWN ISSUE: ONLY HTTPS IS WORKING TO SAVE FILE
-    const file = fs.createWriteStream(`${updatedPath}/${datasheetFileName}`);
-    request.get(productDatasheet).pipe(file);
-    console.log("The pdf was saved");
+    // KNOWN ISSUE: THIS METHOD DOES NOT WORK
+    // const file = fs.createWriteStream(`${updatedPath}/${datasheetFileName}`);
+    // request(productDatasheet).pipe(file);
+    // console.log("The pdf was saved");
+
+    // updated request
+    let pdfBuffer = request.get({uri: productDatasheet, encoding: null});
+    //console.log("Writing downloaded PDF file to " + `${updatedPath}/${datasheetFileName}` + "...");
+    fs.writeFileSync(`${updatedPath}/${datasheetFileName}`, pdfBuffer);
 };
 // example writeFiles method call
 //writeFiles("541-10.0KAFTR-ND", "https://www.digikey.com/en/products/detail/vishay-dale/CRCW251210K0FKEG/1173663?s=N4IgTCBcDaIKwBYCMBaJAGAdOg0gQQDEAVAJRQDkAREAXQF8g", "https://www.vishay.com/docs/20035/dcrcwe3.pdf", 2);
