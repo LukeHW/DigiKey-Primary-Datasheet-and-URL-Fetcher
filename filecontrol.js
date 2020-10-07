@@ -4,6 +4,7 @@ const path = require("path");
 const product = require("./apicontrol.js");
 const createShortcutUrl = require("create-url-shortcut");
 const readline = require("readline");
+const request = require("request");
 require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 const download = require("download-pdf");
 
@@ -25,6 +26,8 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     // updatedPath with index and product ID
     var updatedPath = path.join(rootFilePath, folderName);
 
+    var finalPathName = `${updatedPath}/${datasheetFileName}`;
+
     // create new folder in rootFilePath
     fs.mkdir(updatedPath, function(err) {
         if (err) {
@@ -43,23 +46,37 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     });
 
     // http/https response using request -- saves .pdf file
-    // KNOWN ISSUE: THIS METHOD DOES NOT WORK
-    // const file = fs.createWriteStream(`${updatedPath}/${datasheetFileName}`);
-    // request(productDatasheet).pipe(file);
-    // console.log("The pdf was saved");
-
-    // updated request (THIS IS FOR SERVER SIDE -- URI)
-    //let pdfBuffer = request.get({uri: productDatasheet, encoding: null});
-    //console.log("Writing downloaded PDF file to " + `${updatedPath}/${datasheetFileName}` + "...");
-    //fs.writeFileSync(`${updatedPath}/${datasheetFileName}`, pdfBuffer);
-
-    // third option I have tried. not working either -- throws error, not documented
-    var options = {
-        directory: updatedPath,
-        filename: datasheetFileName
+    const download = (url, dest, cb) => {
+        const file = fs.createWriteStream(dest);
+        const sendReq = request.get(url);
+    
+        // verify response code
+        sendReq.on('response', (response) => {
+            if (response.statusCode !== 200) {
+                return cb('Response status was ' + response.statusCode);
+            }
+    
+            sendReq.pipe(file);
+        });
+    
+        // close() is async, call cb after close completes
+        file.on('finish', () => file.close(cb));
+    
+        // check for request errors
+        sendReq.on('error', (err) => {
+            fs.unlinkSync(dest);
+            return cb(err.message);
+        });
+    
+        file.on('error', (err) => { // Handle errors
+            fs.unlinkSync(dest); // Delete the file async. (But we don't check the result)
+            return cb(err.message);
+        });
     };
 
-    download(productDatasheet, options);
+    download(productDatasheet, finalPathName, () => {
+        console.log("pdf was downloaded and saved");
+    });
 };
 
 // reading the file and calling methods
