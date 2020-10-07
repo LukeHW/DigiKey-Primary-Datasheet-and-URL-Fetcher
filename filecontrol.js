@@ -32,9 +32,7 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
     fs.mkdir(updatedPath, function(err) {
         if (err) {
             console.log(err);
-        } else {
-            console.log("New directory successfully created.");
-        }
+        } 
     });
 
     // save the shortcut for the product as a .url file
@@ -42,7 +40,6 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
         if(err) {
             return console.log(err);
         } 
-        console.log("The shortcut was saved!");
     });
 
     // http/https response using request -- saves .pdf file
@@ -55,7 +52,6 @@ var writeFiles = (productID, productURL, productDatasheet, index) => {
             if (response.statusCode !== 200) {
                 return cb('Response status was ' + response.statusCode);
             }
-    
             sendReq.pipe(file);
         });
     
